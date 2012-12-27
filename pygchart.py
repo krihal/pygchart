@@ -1,3 +1,4 @@
+import os
 import csv
 import sys
 import getopt
@@ -14,21 +15,21 @@ def open_csv(file):
         cr = csv.reader(csvfile, delimiter=',')
         for row in cr:
             labels.append(row[0])
-            values.append(row[1])
+            values.append(int(row[1]))
 
     csvfile.close()
 
     return labels, values
 
 def plot(labels, values, filename):
-    max_y = 500
+    filename, fileext = os.path.splitext(filename)
 
-    chart = SimpleLineChart(600, 375, y_range=[0, max_y])
+    chart = SimpleLineChart(600, 375, y_range=[min(values), max(values)])
     chart.add_data(values)
     chart.set_colours(['0000FF'])
     chart.set_grid(0, 25, 5, 5)
 
-    left_axis = range(0, max_y + 1, 25)
+    left_axis = [int(min(values) - 0.5), 0, int(max(values) + 0.5)]
     left_axis[0] = ''
 
     chart.set_axis_labels(Axis.LEFT, left_axis)
@@ -55,6 +56,7 @@ def main(argv):
             usage()
 
     (labels, values) = open_csv(filename)
+    plot(labels, values, filename)
 
 if __name__ == '__main__':
     main(sys.argv[1:])
