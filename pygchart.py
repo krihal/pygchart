@@ -24,7 +24,7 @@ def dataparser(filename):
 def plotter(fund):
     
     (dates, values) = dataparser("data/%s" % fund)
-    left_axis = [int(min(values)), 0, int(max(values) + 1)]
+    left_axis = [int(min(values)), int(max(values) + 1)]
     
     chart = SimpleLineChart(600, 375, y_range=[min(values), max(values) + 1])
     chart.add_data(values)
